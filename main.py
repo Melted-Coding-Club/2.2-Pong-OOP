@@ -75,6 +75,7 @@ class Paddle:
         if self.rect.bottom > screen.get_height():
             self.rect.bottom = screen.get_height()
 
+
 # Objects
 balls = [Ball()]
 players = [Paddle(0), Paddle(1)]
