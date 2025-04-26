@@ -32,6 +32,7 @@ class Paddle:
             self.rect.bottom = screen.get_height()
 
 
+# Objects
 players = [Paddle()]
 
 while True:
