@@ -25,6 +25,7 @@ class Paddle:
             self.rect.y += self.speed
 
 
+# Objects
 players = [Paddle()]
 
 while True:
