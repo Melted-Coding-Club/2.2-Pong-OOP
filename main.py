@@ -1,6 +1,6 @@
-import random
-import math
 import pygame
+import math
+import random
 
 pygame.init()
 font = pygame.font.SysFont("arial", 25)
