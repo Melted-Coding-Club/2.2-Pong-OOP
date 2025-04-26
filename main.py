@@ -10,13 +10,16 @@ fps = 60
 
 
 class Paddle:
-    def __init__(self):
+    def __init__(self, player_id):
         width = 10
         height = 90
         dist = 30
 
         self.speed = 5
-        self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
+        if player_id == 0:
+            self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
+        elif player_id == 1:
+            self.rect = pygame.Rect(screen.get_width() - dist - width, screen.get_height() // 2 - height // 2, width, height)
 
     def move(self, direction):
         if direction == "up":
@@ -32,7 +35,7 @@ class Paddle:
             self.rect.bottom = screen.get_height()
 
 
-players = [Paddle(), Paddle()]
+players = [Paddle(0), Paddle(1)]
 
 while True:
     # Event handling
