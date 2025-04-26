@@ -23,6 +23,13 @@ class Paddle:
             self.rect.y -= self.speed
         elif direction == "down":
             self.rect.y += self.speed
+        self.check_window_collision()
+
+    def check_window_collision(self):
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > screen.get_height():
+            self.rect.bottom = screen.get_height()
 
 
 players = [Paddle()]
