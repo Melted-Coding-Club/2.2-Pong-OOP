@@ -130,9 +130,6 @@ while True:
 
     for ball in balls:
         ball.move()
-
-    # Ball collision with paddles
-    for ball in balls:
         ball.check_player_collision(players)
 
         # Scoring system
