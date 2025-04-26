@@ -1,5 +1,6 @@
 import pygame
 import math
+import random
 
 pygame.init()
 font = pygame.font.SysFont("arial", 25)
@@ -16,7 +17,8 @@ class Ball:
         radius = 10
 
         self.speed = 5
-        self.angle = 6
+        self.speed_increment = 0.2
+        self.angle = random.choice([math.radians(random.randint(-45, 45)), math.radians(random.randint(135, 225))])
         self.rect = pygame.Rect(screen.get_width() // 2 - radius, screen.get_height() // 2 - radius, radius * 2, radius * 2)
 
         self.initial_speed = self.speed
@@ -45,6 +47,7 @@ class Ball:
             if ball_hits_paddle:
                 if (paddle_on_left and ball_moving_left) or (paddle_on_right and ball_moving_right):
                     self.angle = math.pi - self.angle
+                    self.speed += self.speed_increment
 
 
 class Paddle:
