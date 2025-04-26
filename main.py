@@ -8,6 +8,19 @@ pygame.display.set_caption('Pong')
 clock = pygame.time.Clock()
 fps = 60
 
+
+class Paddle:
+    def __init__(self):
+        width = 10
+        height = 90
+        dist = 30
+
+        self.speed = 5
+        self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
+
+
+players = [Paddle()]
+
 while True:
     # Event handling
     for event in pygame.event.get():
@@ -15,8 +28,16 @@ while True:
             pygame.quit()
             quit()
 
+    # Player controls
+    pressed_keys = pygame.key.get_pressed()
+    if pressed_keys[pygame.K_w]:
+        players[0].rect.y -= players[0].speed
+    if pressed_keys[pygame.K_s]:
+        players[0].rect.y += players[0].speed
+
     # Rendering
     screen.fill("black")
+    pygame.draw.rect(screen, "blue", players[0].rect)
 
     # Update Screen
     pygame.display.flip()
