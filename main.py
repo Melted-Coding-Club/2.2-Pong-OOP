@@ -77,11 +77,24 @@ class Paddle:
         if self.rect.bottom > screen.get_height():
             self.rect.bottom = screen.get_height()
 
+
 # Objects
 balls = [Ball()]
 players = [Paddle(0), Paddle(1)]
 
+game_over = False
 while True:
+    if game_over:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+        over_msg = font.render("Game Over", True, "red")
+        over_rect = over_msg.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(over_msg, over_rect)
+        pygame.display.flip()
+        continue
+
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -100,6 +113,14 @@ while True:
     for ball in balls:
         ball.move()
         ball.check_player_collision(players)
+
+        # Scoring system
+        if ball.rect.left <= 0:
+            players[1].score += 1
+            game_over = True
+        elif ball.rect.right >= screen.get_width():
+            players[0].score += 1
+            game_over = True
 
     # Rendering
     screen.fill("black")
