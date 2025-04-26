@@ -109,8 +109,8 @@ while True:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 game_over = reset()
         over_msg = font.render("Game Over", True, "red")
-        screen.blit(over_msg, [(screen.get_width() // 2) - (over_msg.get_width() // 2),
-                               (screen.get_height() // 2) - (over_msg.get_height() // 2)])
+        over_rect = over_msg.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(over_msg, over_rect)
         pygame.display.flip()
         continue
 
