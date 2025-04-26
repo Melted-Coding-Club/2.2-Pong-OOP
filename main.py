@@ -18,8 +18,10 @@ class Paddle:
         self.speed = 5
         if player_id == 0:
             self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
+            self.color = "blue"
         elif player_id == 1:
             self.rect = pygame.Rect(screen.get_width() - dist - width, screen.get_height() // 2 - height // 2, width, height)
+            self.color = "green"
 
     def move(self, direction):
         if direction == "up":
@@ -57,8 +59,8 @@ while True:
 
     # Rendering
     screen.fill("black")
-    pygame.draw.rect(screen, "blue", players[0].rect)
-    pygame.draw.rect(screen, "green", players[1].rect)
+    for player in players:
+        pygame.draw.rect(screen, player.color, player.rect)
 
     # Update Screen
     pygame.display.flip()
