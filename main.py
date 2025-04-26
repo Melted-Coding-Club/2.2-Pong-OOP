@@ -2,6 +2,7 @@ import pygame
 import math
 
 pygame.init()
+font = pygame.font.SysFont("arial", 25)
 
 # Window setup
 screen = pygame.display.set_mode((800, 600))
@@ -50,6 +51,7 @@ class Paddle:
         height = 90
         dist = 30
 
+        self.score = 0
         self.speed = 5
         if player_id == 0:
             self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
@@ -105,6 +107,10 @@ while True:
         pygame.draw.circle(screen, "red", ball.rect.center, ball.rect.width // 2)
     for player in players:
         pygame.draw.rect(screen, player.color, player.rect)
+
+    # Display scores
+    score_text = font.render(f"{players[0].score}  -  {players[1].score}", True, "white")
+    screen.blit(score_text, [(screen.get_width() // 2) - 20, 20])
 
     # Update Screen
     pygame.display.flip()
