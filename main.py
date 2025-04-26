@@ -19,6 +19,7 @@ class Paddle:
         self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
 
 
+# Objects
 players = [Paddle()]
 
 while True:
