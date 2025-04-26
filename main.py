@@ -1,4 +1,5 @@
 import pygame
+import math
 
 pygame.init()
 
@@ -7,6 +8,19 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption('Pong')
 clock = pygame.time.Clock()
 fps = 60
+
+
+class Ball:
+    def __init__(self):
+        radius = 10
+
+        self.speed = 5
+        self.angle = 6
+        self.rect = pygame.Rect(screen.get_width() // 2 - radius, screen.get_height() // 2 - radius, radius * 2, radius * 2)
+
+    def move(self):
+        self.rect.centerx = self.rect.centerx + math.cos(self.angle) * self.speed
+        self.rect.centery = self.rect.centery + math.sin(self.angle) * self.speed
 
 
 class Paddle:
@@ -40,7 +54,8 @@ class Paddle:
         if self.rect.bottom > screen.get_height():
             self.rect.bottom = screen.get_height()
 
-
+# Objects
+balls = [Ball()]
 players = [Paddle(0), Paddle(1)]
 
 while True:
@@ -58,8 +73,14 @@ while True:
         if pressed_keys[player.input_down]:
             player.move("down")
 
+    # Ball movement
+    for ball in balls:
+        ball.move()
+
     # Rendering
     screen.fill("black")
+    for ball in balls:
+        pygame.draw.circle(screen, "red", ball.rect.center, ball.rect.width // 2)
     for player in players:
         pygame.draw.rect(screen, player.color, player.rect)
 
