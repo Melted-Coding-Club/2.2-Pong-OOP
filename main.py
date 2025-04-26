@@ -29,8 +29,25 @@ class Ball:
         self.check_window_collision()
 
     def check_window_collision(self):
-        if self.rect.top <= 0 or self.rect.bottom >= screen.get_height():
+        if self.rect.top <= 0:
+            self.rect.top = 0  # prevent sticking
             self.angle = math.pi * 2 - self.angle
+        elif self.rect.bottom >= screen.get_height():
+            self.rect.bottom = screen.get_height()  # prevent sticking
+            self.angle = math.pi * 2 - self.angle
+
+    def check_player_collision(self, players):
+        for player in players:
+            ball_hits_paddle = ball.rect.colliderect(player)
+            ball_moving_left = math.cos(ball.angle) < 0
+            ball_moving_right = math.cos(ball.angle) > 0
+            paddle_on_left = player.rect.centerx < ball.rect.centerx
+            paddle_on_right = player.rect.centerx > ball.rect.centerx
+
+            if ball_hits_paddle:
+                if (paddle_on_left and ball_moving_left) or (paddle_on_right and ball_moving_right):
+                    self.angle = math.pi - self.angle
+                    self.speed += self.speed_increment
 
 
 class Paddle:
@@ -43,8 +60,10 @@ class Paddle:
         self.speed = 5
         if player_id == 0:
             self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
+            self.color = "blue"
         elif player_id == 1:
             self.rect = pygame.Rect(screen.get_width() - dist - width, screen.get_height() // 2 - height // 2, width, height)
+            self.color = "green"
 
         self.initial_pos = self.rect.topleft
 
@@ -63,16 +82,16 @@ class Paddle:
 
 
 # Objects
-ball = Ball()
+balls = [Ball()]
 players = [Paddle(0), Paddle(1)]
 
 
 def reset():
     for player in players:
         player.rect.topleft = player.initial_pos
-        player.score = 0
-    ball.centre = [screen.get_width() // 2, screen.get_height() // 2]
-    ball.speed = ball.initial_speed
+    for ball in balls:
+        ball.rect.center = [screen.get_width() // 2, screen.get_height() // 2]
+        ball.speed = ball.initial_speed
     return False
 
 
@@ -108,27 +127,27 @@ while True:
     if pressed_keys[pygame.K_DOWN]:
         players[1].move("down")
 
-    ball.move()
+    for ball in balls:
+        ball.move()
 
     # Ball collision with paddles
-    if ((ball.rect.colliderect(players[0]) and math.cos(ball.angle) < 0)
-            or (ball.rect.colliderect(players[1]) and math.cos(ball.angle) > 0)):
-        ball.angle = math.pi - ball.angle
-        ball.speed += ball.speed_increment
+    for ball in balls:
+        ball.check_player_collision(players)
 
-    # Scoring system
-    if ball.rect.left <= 0:
-        players[1].score += 1
-        game_over = True
-    elif ball.rect.right >= screen.get_width():
-        players[0].score += 1
-        game_over = True
+        # Scoring system
+        if ball.rect.left <= 0:
+            players[1].score += 1
+            game_over = True
+        elif ball.rect.right >= screen.get_width():
+            players[0].score += 1
+            game_over = True
 
     # Rendering
     screen.fill("black")
-    pygame.draw.circle(screen, "red", ball.rect.center, ball.rect.width // 2)
-    pygame.draw.rect(screen, "blue", players[0].rect)
-    pygame.draw.rect(screen, "green", players[1].rect)
+    for ball in balls:
+        pygame.draw.circle(screen, "red", ball.rect.center, ball.rect.width // 2)
+    for player in players:
+        pygame.draw.rect(screen, player.color, player.rect)
 
     # Display scores
     score_text = font.render(f"{players[0].score}  -  {players[1].score}", True, "white")
