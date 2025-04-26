@@ -19,6 +19,8 @@ class Ball:
         self.angle = 6
         self.rect = pygame.Rect(screen.get_width() // 2 - radius, screen.get_height() // 2 - radius, radius * 2, radius * 2)
 
+        self.initial_speed = self.speed
+
     def move(self):
         self.rect.centerx = self.rect.centerx + math.cos(self.angle) * self.speed
         self.rect.centery = self.rect.centery + math.sin(self.angle) * self.speed
@@ -64,6 +66,8 @@ class Paddle:
             self.input_up = pygame.K_UP
             self.input_down = pygame.K_DOWN
 
+        self.initial_pos = self.rect.topleft
+
     def move(self, direction):
         if direction == "up":
             self.rect.y -= self.speed
@@ -82,6 +86,16 @@ class Paddle:
 balls = [Ball()]
 players = [Paddle(0), Paddle(1)]
 
+
+def reset():
+    for player in players:
+        player.rect.topleft = player.initial_pos
+    for ball in balls:
+        ball.rect.center = [screen.get_width() // 2, screen.get_height() // 2]
+        ball.speed = ball.initial_speed
+    return False
+
+
 game_over = False
 while True:
     if game_over:
@@ -89,6 +103,8 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                game_over = reset()
         over_msg = font.render("Game Over", True, "red")
         over_rect = over_msg.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
         screen.blit(over_msg, over_rect)
