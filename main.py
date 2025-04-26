@@ -32,7 +32,7 @@ class Paddle:
             self.rect.bottom = screen.get_height()
 
 
-players = [Paddle()]
+players = [Paddle(), Paddle()]
 
 while True:
     # Event handling
@@ -47,10 +47,15 @@ while True:
         players[0].move("up")
     if pressed_keys[pygame.K_s]:
         players[0].move("down")
+    if pressed_keys[pygame.K_UP]:
+        players[1].move("up")
+    if pressed_keys[pygame.K_DOWN]:
+        players[1].move("down")
 
     # Rendering
     screen.fill("black")
     pygame.draw.rect(screen, "blue", players[0].rect)
+    pygame.draw.rect(screen, "green", players[1].rect)
 
     # Update Screen
     pygame.display.flip()
