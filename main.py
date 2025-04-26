@@ -101,6 +101,12 @@ while True:
         ball.move()
         ball.check_player_collision(players)
 
+        # Scoring system
+        if ball.rect.left <= 0:
+            players[1].score += 1
+        elif ball.rect.right >= screen.get_width():
+            players[0].score += 1
+
     # Rendering
     screen.fill("black")
     for ball in balls:
