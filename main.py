@@ -19,9 +19,13 @@ class Paddle:
         if player_id == 0:
             self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
             self.color = "blue"
+            self.input_up = pygame.K_w
+            self.input_down = pygame.K_s
         elif player_id == 1:
             self.rect = pygame.Rect(screen.get_width() - dist - width, screen.get_height() // 2 - height // 2, width, height)
             self.color = "green"
+            self.input_up = pygame.K_UP
+            self.input_down = pygame.K_DOWN
 
     def move(self, direction):
         if direction == "up":
@@ -48,14 +52,11 @@ while True:
 
     # Player controls
     pressed_keys = pygame.key.get_pressed()
-    if pressed_keys[pygame.K_w]:
-        players[0].move("up")
-    if pressed_keys[pygame.K_s]:
-        players[0].move("down")
-    if pressed_keys[pygame.K_UP]:
-        players[1].move("up")
-    if pressed_keys[pygame.K_DOWN]:
-        players[1].move("down")
+    for player in players:
+        if pressed_keys[player.input_up]:
+            player.move("up")
+        if pressed_keys[player.input_down]:
+            player.move("down")
 
     # Rendering
     screen.fill("black")
