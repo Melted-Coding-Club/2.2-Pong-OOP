@@ -18,6 +18,12 @@ class Paddle:
         self.speed = 5
         self.rect = pygame.Rect(dist, screen.get_height() // 2 - height // 2, width, height)
 
+    def move(self, direction):
+        if direction == "up":
+            self.rect.y -= self.speed
+        elif direction == "down":
+            self.rect.y += self.speed
+
 
 players = [Paddle()]
 
@@ -31,9 +37,9 @@ while True:
     # Player controls
     pressed_keys = pygame.key.get_pressed()
     if pressed_keys[pygame.K_w]:
-        players[0].rect.y -= players[0].speed
+        players[0].move("up")
     if pressed_keys[pygame.K_s]:
-        players[0].rect.y += players[0].speed
+        players[0].move("down")
 
     # Rendering
     screen.fill("black")
