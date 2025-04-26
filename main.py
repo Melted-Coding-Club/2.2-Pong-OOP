@@ -15,7 +15,7 @@ class Ball:
         radius = 10
 
         self.speed = 5
-        self.angle = 6
+        self.angle = 5
         self.rect = pygame.Rect(screen.get_width() // 2 - radius, screen.get_height() // 2 - radius, radius * 2, radius * 2)
 
     def move(self):
