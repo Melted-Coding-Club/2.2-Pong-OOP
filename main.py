@@ -15,7 +15,7 @@ class Ball:
         radius = 10
 
         self.speed = 5
-        self.angle = 5
+        self.angle = 6
         self.rect = pygame.Rect(screen.get_width() // 2 - radius, screen.get_height() // 2 - radius, radius * 2, radius * 2)
 
     def move(self):
@@ -30,6 +30,18 @@ class Ball:
         elif self.rect.bottom >= screen.get_height():
             self.rect.bottom = screen.get_height()  # prevent sticking
             self.angle = math.pi * 2 - self.angle
+
+    def check_player_collision(self, players):
+        for player in players:
+            ball_hits_paddle = ball.rect.colliderect(player)
+            ball_moving_left = math.cos(ball.angle) < 0
+            ball_moving_right = math.cos(ball.angle) > 0
+            paddle_on_left = player.rect.centerx < ball.rect.centerx
+            paddle_on_right = player.rect.centerx > ball.rect.centerx
+
+            if ball_hits_paddle:
+                if (paddle_on_left and ball_moving_left) or (paddle_on_right and ball_moving_right):
+                    self.angle = math.pi - self.angle
 
 
 class Paddle:
@@ -85,6 +97,7 @@ while True:
     # Ball movement
     for ball in balls:
         ball.move()
+        ball.check_player_collision(players)
 
     # Rendering
     screen.fill("black")
