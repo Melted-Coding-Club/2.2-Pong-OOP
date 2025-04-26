@@ -128,6 +128,7 @@ while True:
         if pressed_keys[player.input_down]:
             player.move("down")
 
+    # Ball movement
     for ball in balls:
         ball.move()
         ball.check_player_collision(players)
